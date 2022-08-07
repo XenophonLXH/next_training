@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Grid  from "@mui/material/Grid";
@@ -7,13 +9,28 @@ import Header from '../components/Header/header';
 import List from '../components/List/list';
 import Map from '../components/Map/map';
 
+import { getPlaces } from "./api";
 
 const Home = () => {
+
+	// Set State function
+	// to maintain the places
+	const [places, setPlaces] = useState([]);
+
+	// Function to fetch
+	// the places when a variable changes
+	useEffect(() => {
+		getPlaces().then((data) => {
+			console.log(`Fetched Data ${data}`)
+			setPlaces(data);
+		})
+	}, []);
+
 	return (
 		<>
 			<CssBaseline/>
 			<Header/>
-			<Grid container spacing={3}>
+			<Grid container spacing={2} style={{ width: '100%', height: '90vh'}}>
 				<Grid item xs={12} md={4}>
 					<List/>
 				</Grid>
