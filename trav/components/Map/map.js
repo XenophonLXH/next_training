@@ -6,15 +6,13 @@ import { useState } from 'react';
 
 import useStyles from "./styles.js";
 
-const Map = ({setCoordinates, setBounds, coordinates, places}) => {
+const Map = ({setCoordinates, setBounds, coordinates, places, setChildClicked }) => {
     // Uses the JSZ Styling
     const classes = useStyles();
 
     // Used for dynaimc media queries in jsx
     const isDesktop = useMediaQuery('(min-width:600px)');
 
-    // Lifting the state up
-    const [childClicked, setChildClicked] = useState(null);
 
 
     return (

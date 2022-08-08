@@ -68,7 +68,7 @@ const Home = () => {
 				<Grid item xs={12} md={4}>
 					<List 
 						places={filteredPlaces.length ? filteredPlaces : places}
-						childClick={childClick}
+						childClicked={childClick}
 						isLoading={isLoading}
 						type={type}
 						setType={setType}

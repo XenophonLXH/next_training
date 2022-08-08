@@ -5,58 +5,51 @@ import PlaceDetails from '../PlaceDetails/placeDetails.js';
 
 
 
-const List = ({ places, childClick, isLoading, type, setType, rating, setRating }) => {
-    const classes = useStyles();
-
+const List = ({ places, type, setType, rating, setRating, childClicked, isLoading }) => {
     const [elRefs, setElRefs] = useState([]);
-
+    const classes = useStyles();
+  
     useEffect(() => {
-        const refs = Array(places?.length).fill().map((_, i) => elRefs[i] || createRef());
-        setElRefs(refs);
+      setElRefs((refs) => Array(places.length).fill().map((_, i) => refs[i] || createRef()));
     }, [places]);
-
+  
     return (
-        <div className={classes.container}>
-            <Typography variant="h4">Restaurants, Hotels and Attractions near you.</Typography>
-            {isLoading ? (
-                <div className={classes.loading}>
-                    <CircularProgress size="5rem"/>
-                </div>
-            ) : (
-            <>
-                <div className={classes.inputContainer}>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel>Type</InputLabel>
-                        <Select value={type} onChange={(e) => setType(e.target.value)}>
-                            <MenuItem value="restaurants">Restaurants</MenuItem>
-                            <MenuItem value="hotels">Hotels</MenuItem>
-                            <MenuItem value="attractions">Attractions</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel>Rating</InputLabel>
-                        <Select value={rating} onChange={(e) => setRating(e.target.value)}>
-                            <MenuItem value={0}>All</MenuItem>
-                            <MenuItem value={3}>Above 3.0</MenuItem>
-                            <MenuItem value={4}>Above 4.0</MenuItem>
-                            <MenuItem value={4.5}>Above 4.5</MenuItem>
-                        </Select>
-                    </FormControl>
-                </div>
-                <Grid container space={3} className={classes.list}>
-                    {places?.map((place, i) => (
-                        <Grid item xs={12} key={i}>
-                            <PlaceDetails place={place}
-                            select={Number(childClick) === i}
-                            refProp={elRefs[i]}
-                            />
-                        </Grid>
-                    ))}
+      <div className={classes.container}>
+        <Typography variant="h4">Food & Dining around you</Typography>
+        {isLoading ? (
+          <div className={classes.loading}>
+            <CircularProgress size="5rem" />
+          </div>
+        ) : (
+          <>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="type">Type</InputLabel>
+              <Select id="type" value={type} onChange={(e) => setType(e.target.value)}>
+                <MenuItem value="restaurants">Restaurants</MenuItem>
+                <MenuItem value="hotels">Hotels</MenuItem>
+                <MenuItem value="attractions">Attractions</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="rating">Rating</InputLabel>
+              <Select id="rating" value={rating} onChange={(e) => setRating(e.target.value)}>
+                <MenuItem value="">All</MenuItem>
+                <MenuItem value="3">Above 3.0</MenuItem>
+                <MenuItem value="4">Above 4.0</MenuItem>
+                <MenuItem value="4.5">Above 4.5</MenuItem>
+              </Select>
+            </FormControl>
+            <Grid container spacing={3} className={classes.list}>
+              {places?.map((place, i) => (
+                <Grid ref={elRefs[i]} key={i} item xs={12}>
+                  <PlaceDetails selected={Number(childClicked) === i} refProp={elRefs[i]} place={place} />
                 </Grid>
-            </>
-            )}
-        </div>
+              ))}
+            </Grid>
+          </>
+        )}
+      </div>
     );
-}
- 
-export default List;
+};
+  
+  export default List;
