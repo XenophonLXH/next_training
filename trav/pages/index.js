@@ -20,14 +20,15 @@ const Home = () => {
 	const [coordinates, setCoordinates] = useState({});
 	const [bounds, setBounds] = useState({});
 
-	// Function to fetch
-	// the places when a variable changes
-	useEffect(() => {
-		getPlaces(bounds.sw, bounds.ne).then((data) => {
-			console.log(`Fetched Data ${JSON.stringify(data)}`)
-			setPlaces(data);
-		})
-	}, [coordinates, bounds]);
+	const [type, setType] = useState('hotels');
+    const [rating, setRating] = useState('');
+	const [filteredPlaces, setFilteredPlaces] = useState({});
+
+	// Pushed state into index
+	const [childClick, setChildClicked] = useState(null);
+
+	// Loading
+	const [isLoading, setIsLoading] = useState(false);
 
 	// Get users location
 	useEffect(() => {
@@ -37,7 +38,27 @@ const Home = () => {
 				lng: longitude
 			});
 		});
-	}, [])
+	}, []);
+
+	// Function to fetch
+	// the places when a variable changes
+	useEffect(() => {
+		setIsLoading(true);
+		getPlaces(type, bounds.sw, bounds.ne).then((data) => {
+			console.log(`Fetched Data ${JSON.stringify(data)}`)
+			setPlaces(data);
+			setFilteredPlaces([]);
+			setIsLoading(false);
+		})
+	}, [type, coordinates, bounds]);
+
+
+	// Executed when the rating changes
+	useEffect(() => {
+		const filteredPlaces = places.filter((place) => place.rating >= rating);
+		setFilteredPlaces(places);
+	}, [rating]);
+
 
 	return (
 		<>
@@ -45,37 +66,26 @@ const Home = () => {
 			<Header/>
 			<Grid container spacing={2} style={{ width: '100%', height: '90vh'}}>
 				<Grid item xs={12} md={4}>
-					<List places={places}/>
+					<List 
+						places={filteredPlaces.length ? filteredPlaces : places}
+						childClick={childClick}
+						isLoading={isLoading}
+						type={type}
+						setType={setType}
+						rating={rating}
+						setRating={setRating}/>
 				</Grid>
 				<Grid item xs={12} md={4}>
 					<Map
 					setCoordinates={setCoordinates}
 					setBounds={setBounds}
 					coordinates={coordinates}
+					places={filteredPlaces.length ? filteredPlaces : places}
+					setChildClicked={setChildClicked}
 					/>
 				</Grid>
 			</Grid>
 		</>
-		// <div className={styles.container}>
-		// 	<Head>
-		//  	<title>Create Next App</title>
-		// 		<link rel="icon" href="/favicon.ico" />
-		// 	</Head>
-
-		// 	<main className={styles.main}>
-		// 		<h1 className={styles.title}>
-		// 			Welcome to <a href="https://nextjs.org">
-		// 				Next.js!</a> integrated with{" "}
-		// 			<a href="https://mui.com/">Material-UI!</a>
-		// 		</h1>
-		// 		<p className={styles.description}>
-		// 			Get started by editing{" "}
-		// 			<code className={styles.code}>
-		// 				pages/index.js</code>
-		// 		</p>
-
-		// 	</main>
-		// </div>
 	);
 }
 
