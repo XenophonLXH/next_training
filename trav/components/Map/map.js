@@ -5,25 +5,27 @@ import Rating from '@mui/material/Rating';
 
 import useStyles from "./styles.js";
 
-const Map = () => {
+const Map = ({setCoordinates, setBounds, coordinates}) => {
     // Uses the JSZ Styling
     const classes = useStyles();
 
     // Used for dynaimc media queries in jsx
     const isMoble = useMediaQuery('(min-width: 600px)');
 
-    const cooridnates = {lat: 0, lng: 0};
 
     return (
         <div className={classes.mapContainer}>
             <GoogleMapReact
                 bootstrapURLKeys={{key: 'AIzaSyC2QONcWinenD8hX9E72iCOYNm0BlWG8UE'}}
-                defaultCenter={cooridnates}
+                defaultCenter={coordinates}
                 defaultZoom={isMoble ? 12 : 8}
-                center={cooridnates}
+                center={coordinates}
                 margin={[50, 50, 50, 50]}
                 options={''}
-                onClick={''}
+                onChange={(e) => {
+                    setCoordinates({lat: e.center.lat, lng: e.center.lng});
+                    setBounds({ne: e.marginBounds.ne, sw: e.marginBounds.sw});
+                }}
                 onChildClick={''}
 
             >

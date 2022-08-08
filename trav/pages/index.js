@@ -17,14 +17,27 @@ const Home = () => {
 	// to maintain the places
 	const [places, setPlaces] = useState([]);
 
+	const [coordinates, setCoordinates] = useState({});
+	const [bounds, setBounds] = useState({});
+
 	// Function to fetch
 	// the places when a variable changes
 	useEffect(() => {
-		getPlaces().then((data) => {
-			console.log(`Fetched Data ${data}`)
+		getPlaces(bounds.sw, bounds.ne).then((data) => {
+			console.log(`Fetched Data ${JSON.stringify(data)}`)
 			setPlaces(data);
 		})
-	}, []);
+	}, [coordinates, bounds]);
+
+	// Get users location
+	useEffect(() => {
+		navigator.geolocation.getCurrentPosition(({ coords: {latitude, longitude}}) => {
+			setCoordinates({
+				lat: latitude,
+				lng: longitude
+			});
+		});
+	}, [])
 
 	return (
 		<>
@@ -32,10 +45,14 @@ const Home = () => {
 			<Header/>
 			<Grid container spacing={2} style={{ width: '100%', height: '90vh'}}>
 				<Grid item xs={12} md={4}>
-					<List/>
+					<List places={places}/>
 				</Grid>
 				<Grid item xs={12} md={4}>
-					<Map/>
+					<Map
+					setCoordinates={setCoordinates}
+					setBounds={setBounds}
+					coordinates={coordinates}
+					/>
 				</Grid>
 			</Grid>
 		</>

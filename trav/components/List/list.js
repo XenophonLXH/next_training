@@ -5,17 +5,11 @@ import PlaceDetails from '../PlaceDetails/placeDetails.js';
 
 
 
-const List = () => {
+const List = ({ places }) => {
     const classes = useStyles();
 
     const [type, setType] = useState('hotel');
     const [rating, setRating] = useState('');
-
-    const places = [
-        {name: 'Place 1'},
-        {name: 'Place 2'},
-        {name: 'Place 3'},
-    ];
 
     return (
         <div className={classes.container}>
@@ -41,6 +35,7 @@ const List = () => {
             </div>
             <Grid container space={3} className={classes.list}>
                 {places?.map((place, i) => (
+                    // console.log(`PLACE: ${JSON.stringify(i)}`)
                     <Grid item xs={12} key={i}>
                         <PlaceDetails place={place}/>
                     </Grid>
