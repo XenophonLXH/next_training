@@ -47,7 +47,7 @@ const Map = ({setCoordinates, setBounds, coordinates, places, setChildClicked })
                                 <Typography gutterBottom variant="subtitle2" className={classes.typography}>
                                     {place.name}
                                 </Typography>
-                                <img className={classes.pointer} src={place.image ? place.photo.images.large.url: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'} alt={place.name}/>
+                                <img className={classes.pointer} src={place.photo ? place.photo.images.large.url: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'} alt={place.name}/>
                                 <Rating size="small" value={Number(place.rating)} readOnly/>
                             </Paper>
                         )}
